@@ -6,6 +6,7 @@
           <img class="h-8 w-auto" src="/images/poker.png" alt="Logo" />
         </div>
         <div class="flex space-x-4">
+          <SignUp/>
           <RouterLink to="/" class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white"
             >Home</RouterLink
           >
@@ -22,6 +23,7 @@
 
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
+import SignUp from './signup/SignUp.vue';
 </script>
 
 <style scoped></style>
