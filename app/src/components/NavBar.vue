@@ -8,7 +8,7 @@
         <div class="flex space-x-4">
           <SignUp />
           <RouterLink to="/" class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white">Home</RouterLink>
-          <RouterLink to="/about" class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white">About
+          <RouterLink to="/about" class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white">Play Game
           </RouterLink>
         </div>
       </div>
