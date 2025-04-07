@@ -13,7 +13,7 @@
               type="text"
               id="username"
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Enter your username"
+              placeholder="Enter your email"
               required
             />
           </div>
@@ -30,7 +30,10 @@
             />
           </div>
           <div class="flex justify-between">
-            <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+            <button
+              type="submit"
+              class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            >
               Submit
             </button>
             <button
@@ -63,9 +66,8 @@ const logUser = async () => {
   errorMessage.value = '';
   successMessage.value = '';
 
-  // Sign up the user with Supabase Auth
   const { data, error } = await supabase.auth.signUp({
-    email: formData.value.username, // Using email as the username
+    email: formData.value.username,
     password: formData.value.password
   });
 
@@ -75,22 +77,7 @@ const logUser = async () => {
   }
 
   if (data.user) {
-    // Insert the user into the "users" table
-    const { error: insertError } = await supabase.from('users').insert([
-      {
-        id: data.user.id, // UUID from Supabase Auth
-        username: formData.value.username,
-        password: '', // Password should NOT be stored directly
-        money: 0
-      }
-    ]);
-
-    if (insertError) {
-      errorMessage.value = insertError.message;
-      return;
-    }
-
-    successMessage.value = 'Sign-up successful!';
+    successMessage.value = 'Sign-up successful! Check your email for confirmation.';
     formData.value.username = '';
     formData.value.password = '';
     showModal.value = false;
