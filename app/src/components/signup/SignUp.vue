@@ -1,17 +1,11 @@
 <template>
   <div>
-    <SignUpButton @open-modal="openModal" />
-    <div
-      v-if="showModal"
-      class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50"
-    >
-      <div ref="modalRef" class="bg-white dark:bg-gray-800 p-5 rounded-lg shadow-lg w-96 cursor-move">
+    <SignUpButton @open-modal="showModal = true" />
+    <div v-if="showModal" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+      <div class="bg-white dark:bg-gray-800 p-5 rounded-lg shadow-lg w-96">
         <form @submit.prevent="logUser" class="max-w-sm mx-auto">
           <div class="mb-5">
-            <label
-              for="username"
-              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
+            <label for="username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
               Your username
             </label>
             <input
@@ -19,15 +13,12 @@
               type="text"
               id="username"
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Enter your username"
+              placeholder="Enter your email"
               required
             />
           </div>
           <div class="mb-5">
-            <label
-              for="password"
-              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
+            <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
               Your password
             </label>
             <input
@@ -54,48 +45,44 @@
             </button>
           </div>
         </form>
+        <p v-if="errorMessage" class="text-red-500 text-sm mt-2">{{ errorMessage }}</p>
+        <p v-if="successMessage" class="text-green-500 text-sm mt-2">{{ successMessage }}</p>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick } from 'vue';
+import { ref } from 'vue';
 import SignUpButton from './SignUpButton.vue';
-import { Draggable } from 'gsap/Draggable';
-import gsap from 'gsap';
-
-gsap.registerPlugin(Draggable);
+import { supabase } from '@/plugins/supabase.js';
 
 const showModal = ref(false);
-const modalRef = ref(null);
-const userLogs = ref([]);
 const formData = ref({ username: '', password: '' });
+const errorMessage = ref('');
+const successMessage = ref('');
 
-const openModal = async () => {
-  showModal.value = true;
-  await nextTick();
-  if (modalRef.value) {
-    Draggable.create(modalRef.value, {
-      type: 'x,y',
-      edgeResistance: 0.65,
-      bounds: window,
-      inertia: true
-    });
+const logUser = async () => {
+  errorMessage.value = '';
+  successMessage.value = '';
+
+  const { data, error } = await supabase.auth.signUp({
+    email: formData.value.username,
+    password: formData.value.password
+  });
+
+  if (error) {
+    errorMessage.value = error.message;
+    return;
   }
-};
 
-const logUser = () => {
-  userLogs.value.push({ ...formData.value });
-  console.log(userLogs.value);
-  formData.value.username = '';
-  formData.value.password = '';
-  showModal.value = false;
+  if (data.user) {
+    successMessage.value = 'Sign-up successful! Check your email for confirmation.';
+    formData.value.username = '';
+    formData.value.password = '';
+    showModal.value = false;
+  }
 };
 </script>
 
-<style scoped>
-.cursor-move {
-  cursor: move;
-}
-</style>
+<style scoped></style>
