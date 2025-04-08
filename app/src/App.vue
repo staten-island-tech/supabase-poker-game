@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="w-full sticky top-0 bg-white z-10">
     <NavBar />
   </div>
   <RouterView />
