@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useAuthStore } from '@/stores/auth.js'
 import HomeView from '../views/HomeView.vue'
 
 const router = createRouter({
@@ -12,12 +13,22 @@ const router = createRouter({
     {
       path: '/PlayGame',
       name: 'PlayGame',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import('../views/PlayGame.vue'),
+      meta: { requiresAuth: true },
     },
   ],
+})
+
+router.beforeEach(async (to, from, next) => {
+  const auth = useAuthStore()
+  await auth.fetchUser()
+
+  if (to.meta.requiresAuth && !auth.isAuthenticated()) {
+    alert('You must be logged in to access this page.')
+    next({ name: 'home' })
+  } else {
+    next()
+  }
 })
 
 export default router
