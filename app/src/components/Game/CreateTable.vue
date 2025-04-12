@@ -39,19 +39,17 @@ const userStore = useUserStore()
 const roomStore = useRoomStore()
 const router = useRouter()
 
-// Generate a random room code
 const generateRoomCode = () => {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'
   const code = Array.from({ length: 6 }, () =>
     chars.charAt(Math.floor(Math.random() * chars.length)),
   ).join('')
 
-  console.log('Generated Room Code:', code) // Debugging line to check the generated code
+  console.log('Generated Room Code:', code)
 
   return code
 }
 
-// Create a room and handle logic
 const createRoom = async () => {
   error.value = ''
   roomCode.value = ''
@@ -61,31 +59,25 @@ const createRoom = async () => {
     return
   }
 
-  // Load user data
   await userStore.loadUserData(authStore.user.id)
   const { id, username, money } = userStore.userData || {}
 
-  // Generate room code
   const code = generateRoomCode()
-  console.log('Room Code to be inserted:', code) // Debugging line to ensure code is passed correctly
+  console.log('Room Code to be inserted:', code)
 
   try {
-    // Create the room with the generated code
     const room = await roomStore.createRoom(id, roomName.value || `${username}'s Room`, code)
     if (!room) {
       error.value = 'Failed to create the room. Please try again.'
       return
     }
 
-    // Insert the user into the room with the correct room code
     await roomStore.joinRoom(id, username, money, room.code)
 
-    // Reload members
     await roomStore.loadMembers(room.id)
 
     roomCode.value = room.code
 
-    // Redirect to the game room
     router.push('/PlayGame')
   } catch (err) {
     console.error(err)

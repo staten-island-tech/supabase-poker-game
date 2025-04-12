@@ -104,10 +104,9 @@ const signInUser = async () => {
     showModal.value = false
     isLoggedIn.value = true
 
-    // ✅ Refresh the page AFTER successful login
     setTimeout(() => {
       refreshPage()
-    }) // slight delay so user can see the success message
+    })
   }
 }
 
@@ -115,7 +114,7 @@ const handleAuthClick = async () => {
   if (isLoggedIn.value) {
     await supabase.auth.signOut()
     isLoggedIn.value = false
-    refreshPage() // ✅ Refresh after logout
+    refreshPage()
   } else {
     showModal.value = true
   }
