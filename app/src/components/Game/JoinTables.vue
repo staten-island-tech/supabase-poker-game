@@ -1,6 +1,8 @@
 <template>
   <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-md mx-auto">
-    <h2 class="text-2xl font-semibold text-center mb-4 text-gray-900 dark:text-white">Join a Poker Room</h2>
+    <h2 class="text-2xl font-semibold text-center mb-4 text-gray-900 dark:text-white">
+      Join a Poker Room
+    </h2>
     <form @submit.prevent="joinRoom" class="flex flex-col gap-4">
       <input
         v-model="roomCode"
@@ -22,9 +24,9 @@
 
 <script setup>
 import { ref } from 'vue'
-import { useAuthStore } from '@/stores/auth'
-import { useUserStore } from '@/stores/user'
-import { useRoomStore } from '@/stores/room'
+import { useAuthStore } from '@/stores/auth/auth'
+import { useUserStore } from '@/stores/auth/user'
+import { useRoomStore } from '@/stores/auth/room'
 import { useRouter } from 'vue-router'
 
 const roomCode = ref('')

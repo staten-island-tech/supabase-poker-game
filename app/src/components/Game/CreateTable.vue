@@ -1,6 +1,8 @@
 <template>
   <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-md mx-auto">
-    <h2 class="text-2xl font-semibold text-center mb-4 text-gray-900 dark:text-white">Create a Poker Room</h2>
+    <h2 class="text-2xl font-semibold text-center mb-4 text-gray-900 dark:text-white">
+      Create a Poker Room
+    </h2>
     <form @submit.prevent="createRoom" class="flex flex-col gap-4">
       <input
         v-model="roomName"
@@ -24,9 +26,9 @@
 
 <script setup>
 import { ref } from 'vue'
-import { useAuthStore } from '@/stores/auth'
-import { useUserStore } from '@/stores/user'
-import { useRoomStore } from '@/stores/room'
+import { useAuthStore } from '@/stores/auth/auth'
+import { useUserStore } from '@/stores/auth/user'
+import { useRoomStore } from '@/stores/auth/room'
 import { useRouter } from 'vue-router'
 
 const roomName = ref('')
@@ -39,14 +41,14 @@ const router = useRouter()
 
 // Generate a random room code
 const generateRoomCode = () => {
-  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'
   const code = Array.from({ length: 6 }, () =>
-    chars.charAt(Math.floor(Math.random() * chars.length))
-  ).join('');
+    chars.charAt(Math.floor(Math.random() * chars.length)),
+  ).join('')
 
-  console.log('Generated Room Code:', code); // Debugging line to check the generated code
+  console.log('Generated Room Code:', code) // Debugging line to check the generated code
 
-  return code;
+  return code
 }
 
 // Create a room and handle logic
@@ -64,8 +66,8 @@ const createRoom = async () => {
   const { id, username, money } = userStore.userData || {}
 
   // Generate room code
-  const code = generateRoomCode();
-  console.log('Room Code to be inserted:', code); // Debugging line to ensure code is passed correctly
+  const code = generateRoomCode()
+  console.log('Room Code to be inserted:', code) // Debugging line to ensure code is passed correctly
 
   try {
     // Create the room with the generated code
@@ -90,5 +92,4 @@ const createRoom = async () => {
     error.value = 'Something went wrong creating the room.'
   }
 }
-
 </script>
