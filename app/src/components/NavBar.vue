@@ -12,6 +12,11 @@
             >Home</RouterLink
           >
           <RouterLink
+            to="/Shop"
+            class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white"
+            >Shop
+          </RouterLink>
+          <RouterLink
             to="/PlayGame"
             class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white"
             >Play Game
