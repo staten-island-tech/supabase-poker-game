@@ -1,29 +1,51 @@
-// Import deck and poker-hand-evaluator
 import { deck } from './plugins/PokercardsArray.js'
 import PokerHand from 'poker-hand-evaluator'
 
-// --- Step 1: Shuffle the deck ---
-const deckCopy = deck.slice()
+// --- Convert card to evaluator format ---
+function convertCard(card) {
+  const rankMap = {
+    2: '2',
+    3: '3',
+    4: '4',
+    5: '5',
+    6: '6',
+    7: '7',
+    8: '8',
+    9: '9',
+    10: '10',
+    Jack: 'J',
+    Queen: 'Q',
+    King: 'K',
+    Ace: 'A',
+  }
+
+  const suitMap = {
+    Hearts: 'H',
+    Diamonds: 'D',
+    Clubs: 'C',
+    Spades: 'S',
+  }
+
+  const rank = rankMap[card.value]
+  const suit = suitMap[card.type]
+  return `${rank}${suit}`
+}
+
+// --- Shuffle deck ---
+const deckCopy = [...deck]
 deckCopy.sort(() => 0.5 - Math.random())
 
-// --- Step 2: Deal hole cards (2 per player) ---
-const player1Hole = [deckCopy[0].title, deckCopy[1].title]
-const player2Hole = [deckCopy[2].title, deckCopy[3].title]
+// --- Deal cards ---
+const player1Hole = [deckCopy[0], deckCopy[1]]
+const player2Hole = [deckCopy[2], deckCopy[3]]
+const communityCards = [deckCopy[4], deckCopy[5], deckCopy[6], deckCopy[7], deckCopy[8]]
 
-// --- Step 3: Deal community cards (5 total) ---
-const community = [
-  deckCopy[4].title, // Flop 1
-  deckCopy[5].title, // Flop 2
-  deckCopy[6].title, // Flop 3
-  deckCopy[7].title, // Turn
-  deckCopy[8].title, // River
-]
+// --- Convert to evaluator format ---
+const p1 = [...player1Hole, ...communityCards].map(convertCard)
+const p2 = [...player2Hole, ...communityCards].map(convertCard)
+const community = communityCards.map(convertCard)
 
-// --- Step 4: Combine hole + community for each player ---
-const player1Full = [...player1Hole, ...community]
-const player2Full = [...player2Hole, ...community]
-
-// --- Step 5: Evaluate best 5-card hand from 7 cards ---
+// --- Evaluate best 5-card poker hands ---
 function getBestPokerHand(cards) {
   const combinations = getCombinations(cards, 5)
   let best = null
@@ -41,10 +63,8 @@ function getBestPokerHand(cards) {
   return best
 }
 
-// --- Helper: Generate all 5-card combinations ---
 function getCombinations(arr, n) {
   const result = []
-
   function combine(start, combo) {
     if (combo.length === n) {
       result.push([...combo])
@@ -54,26 +74,42 @@ function getCombinations(arr, n) {
       combine(i + 1, combo.concat(arr[i]))
     }
   }
-
   combine(0, [])
   return result
 }
 
-// --- Step 6: Evaluate and compare players ---
-const bestHand1 = getBestPokerHand(player1Full)
-const bestHand2 = getBestPokerHand(player2Full)
+// --- Evaluate hands ---
+const bestHand1 = getBestPokerHand(p1)
+const bestHand2 = getBestPokerHand(p2)
 
-const winner =
-  bestHand1.getScore() < bestHand2.getScore()
-    ? 'Player 1 Wins!'
-    : bestHand1.getScore() > bestHand2.getScore()
-      ? 'Player 2 Wins!'
-      : 'It’s a Tie!'
+// --- Prize logic ---
+let player1Chips = 1000
+let player2Chips = 1000
+const player1Bet = 100
+const player2Bet = 100
 
-// --- Step 7: Display Results ---
-console.log('🃏 Community Cards:', community)
-console.log('👤 Player 1 Hole Cards:', player1Hole, '| Best Hand:', bestHand1.describe())
-console.log('👤 Player 2 Hole Cards:', player2Hole, '| Best Hand:', bestHand2.describe())
-console.log('🏆', winner)
+player1Chips -= player1Bet
+player2Chips -= player2Bet
 
-//poker-hand-evaluator
+const pot = player1Bet + player2Bet
+
+if (bestHand1.getScore() < bestHand2.getScore()) {
+  player1Chips += pot
+  console.log('🏆 Player 1 wins the pot of', pot)
+} else if (bestHand2.getScore() < bestHand1.getScore()) {
+  player2Chips += pot
+  console.log('🏆 Player 2 wins the pot of', pot)
+} else {
+  player1Chips += pot / 2
+  player2Chips += pot / 2
+  console.log("🤝 It's a tie. Pot split:", pot / 2, 'each')
+}
+
+// --- Log game state ---
+console.log('\n--- Game Summary ---')
+console.log('Community Cards:', community.join(' '))
+console.log('Player 1 Hole:', player1Hole.map((c) => c.title).join(', '))
+console.log('  → Best Hand:', bestHand1.describe())
+console.log('Player 2 Hole:', player2Hole.map((c) => c.title).join(', '))
+console.log('  → Best Hand:', bestHand2.describe())
+console.log('Chips: Player 1 =', player1Chips, '| Player 2 =', player2Chips)
