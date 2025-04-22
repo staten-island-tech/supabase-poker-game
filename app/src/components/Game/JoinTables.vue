@@ -1,6 +1,8 @@
 <template>
   <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-md mx-auto">
-    <h2 class="text-2xl font-semibold text-center mb-4 text-gray-900 dark:text-white">Join a Poker Room</h2>
+    <h2 class="text-2xl font-semibold text-center mb-4 text-gray-900 dark:text-white">
+      Join a Poker Room
+    </h2>
     <form @submit.prevent="joinRoom" class="flex flex-col gap-4">
       <input
         v-model="roomCode"
@@ -22,9 +24,9 @@
 
 <script setup>
 import { ref } from 'vue'
-import { useAuthStore } from '@/stores/auth'
-import { useUserStore } from '@/stores/user'
-import { useRoomStore } from '@/stores/room'
+import { useAuthStore } from '@/stores/auth/auth'
+import { useUserStore } from '@/stores/auth/user'
+import { useRoomStore } from '@/stores/auth/room'
 import { useRouter } from 'vue-router'
 
 const roomCode = ref('')
@@ -37,7 +39,6 @@ const router = useRouter()
 const joinRoom = async () => {
   error.value = ''
 
-  // Ensure the user is logged in
   await authStore.fetchUser()
   const user = authStore.user
 
@@ -46,16 +47,13 @@ const joinRoom = async () => {
     return
   }
 
-  // Load user data
   await userStore.loadUserData(user.id)
   const { id, username, money } = userStore.userData || {}
 
   try {
-    // Join the room and load its details
     await roomStore.joinRoom(id, username, money, roomCode.value.toUpperCase())
     await roomStore.loadMembers(roomStore.currentRoom.id)
 
-    // Redirect the user to the room after joining
     router.push(`/PlayGame/${roomStore.currentRoom.code}`)
   } catch (err) {
     console.error(err)
