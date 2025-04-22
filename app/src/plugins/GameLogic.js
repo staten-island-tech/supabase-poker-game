@@ -113,3 +113,20 @@ console.log('  → Best Hand:', bestHand1.describe())
 console.log('Player 2 Hole:', player2Hole.map((c) => c.title).join(', '))
 console.log('  → Best Hand:', bestHand2.describe())
 console.log('Chips: Player 1 =', player1Chips, '| Player 2 =', player2Chips)
+
+// After shuffling
+console.log('Shuffled Deck:', deckCopy)
+
+// After dealing
+console.log(
+  'Player 1 Hole Cards:',
+  player1Hole.map((card) => card.title),
+)
+console.log(
+  'Player 2 Hole Cards:',
+  player2Hole.map((card) => card.title),
+)
+console.log(
+  'Community Cards:',
+  communityCards.map((card) => card.title),
+)
