@@ -1,12 +1,7 @@
 <template>
   <div>
     <button
-      @click="
-        () => {
-          handleAuthClick()
-          if (isLoggedIn) refreshPage()
-        }
-      "
+      @click="handleAuthClick"
       :class="[
         'text-white font-medium rounded-lg text-sm px-5 py-2.5',
         isLoggedIn
@@ -121,10 +116,8 @@ const handleAuthClick = async () => {
 }
 
 onMounted(async () => {
-  const {
-    data: { session },
-  } = await supabase.auth.getSession()
-  isLoggedIn.value = !!session
+  const { data } = await supabase.auth.getSession()
+  isLoggedIn.value = !!data.session
 })
 
 const refreshPage = () => {
