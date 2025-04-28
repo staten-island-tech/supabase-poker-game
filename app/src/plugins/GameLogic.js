@@ -133,6 +133,52 @@ console.log(
 
 //git clone https://github.com/your-username/your-repo-name.git
 
-//example     :cd C:\Users\kitson.lau23\Documents\GitHub\supabase-poker-game\app\src\plugins
+//ex
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+// ample     :cd C:\Users\kitson.lau23\Documents\GitHub\supabase-poker-game\app\src\plugins
 
 //node GameLogic.js
