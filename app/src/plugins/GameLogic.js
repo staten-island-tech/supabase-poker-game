@@ -1,4 +1,4 @@
-import { deck } from './plugins/PokercardsArray.js'
+import { deck } from './PokecardsArray.js'
 import PokerHand from 'poker-hand-evaluator'
 
 // --- Convert card to evaluator format ---
@@ -130,3 +130,9 @@ console.log(
   'Community Cards:',
   communityCards.map((card) => card.title),
 )
+
+//git clone https://github.com/your-username/your-repo-name.git
+
+//example     :cd C:\Users\kitson.lau23\Documents\GitHub\supabase-poker-game\app\src\plugins
+
+//node GameLogic.js
