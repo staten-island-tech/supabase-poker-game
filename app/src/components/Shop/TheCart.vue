@@ -25,7 +25,6 @@ const props = defineProps({
   cart: Array
 })
 
-// Total chips and price
 const totalChips = computed(() =>
   props.cart.reduce((sum, item) => sum + item.chips * (item.quantity || 1), 0)
 )
@@ -48,7 +47,6 @@ const handlePurchase = async () => {
     return
   }
 
-  // Fetch current money value
   const { data: userData, error: userFetchError } = await supabase
     .from('users')
     .select('money')
@@ -84,5 +82,4 @@ const refreshPage = () => {
 </script>
 
 <style scoped>
-/* Optional styling */
 </style>
