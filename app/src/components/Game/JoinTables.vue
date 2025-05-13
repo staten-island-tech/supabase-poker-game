@@ -36,9 +36,11 @@ const userStore = useUserStore()
 const roomStore = useRoomStore()
 const router = useRouter()
 
+// Handle joining an existing room
 const joinRoom = async () => {
   error.value = ''
-
+  
+  // Fetch the logged-in user
   await authStore.fetchUser()
   const user = authStore.user
 
@@ -47,13 +49,16 @@ const joinRoom = async () => {
     return
   }
 
+  // Load user data
   await userStore.loadUserData(user.id)
   const { id, username, money } = userStore.userData || {}
 
   try {
+    // Try to join the room using the room code
     await roomStore.joinRoom(id, username, money, roomCode.value.toUpperCase())
-    await roomStore.loadMembers(roomStore.currentRoom.id)
-
+    await roomStore.loadMembers(roomStore.currentRoom.id)  // Load room members
+    
+    // Route to the correct room's game view
     router.push(`/PlayGame/${roomStore.currentRoom.code}`)
   } catch (err) {
     console.error(err)
