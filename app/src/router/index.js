@@ -22,6 +22,12 @@ const router = createRouter({
       component: () => import('../views/TheShop.vue'),
       meta: { requiresAuth: true },
     },
+    {
+      path: '/PlayGame/:code',
+      name: 'PokerGame',
+      component: ()=> import('../views/PokerGame.vue'),
+      props: true,
+    },
   ],
 })
 
