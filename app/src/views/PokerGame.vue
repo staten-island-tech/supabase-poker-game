@@ -132,7 +132,7 @@ const startGame = async () => {
       .from('rooms')
       .select('id, code')
       .eq('id', roomStore.currentRoom.id)
-      .single() // Expecting a single row
+      .maybeSingle()
     if (roomError) throw roomError
     if (!room) {
       alert('Room not found.')
@@ -144,7 +144,7 @@ const startGame = async () => {
       .from('games')
       .select('id')
       .eq('room_code', room.code)
-      .single() // Expecting a single row
+      .maybeSingle()
     if (existingGameError) throw existingGameError
     if (existingGame) {
       alert('A game has already been started for this room.')
@@ -184,7 +184,7 @@ const startGame = async () => {
         current_turn: members[0].user_id
       })
       .select()
-      .single() // Expecting a single row
+      .single()
     if (gameError) throw gameError
     if (!game) {
       alert('Failed to create game.')
@@ -228,8 +228,6 @@ const startGame = async () => {
   }
 }
 
-
-
 // Trigger bet action
 const onBet = async (amount) => {
   if (gameStore.players[roomStore.userId].chips < amount) {
@@ -247,5 +245,6 @@ const onFold = async () => {
   await gameStore.updateRoomState(roomStore.currentRoom.id)
 }
 </script>
+
 
 <style scoped></style>
