@@ -13,7 +13,7 @@ const router = createRouter({
     {
       path: '/PlayGame',
       name: 'PlayGame',
-      component: () => import('../views/PlayGame.vue'),
+      component: () => import('../views/GameView.vue'),
       meta: { requiresAuth: true },
     },
     {
@@ -23,10 +23,10 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
-      path: '/PlayGame/:code',
-      name: 'PokerGame',
-      component: ()=> import('../views/PokerGame.vue'),
-      props: true,
+      path: '/LeaderBoard',
+      name: 'LeaderBoard',
+      component: () => import('../views/LeaderBoard.vue'),
+      meta: { requiresAuth: true },
     },
   ],
 })
