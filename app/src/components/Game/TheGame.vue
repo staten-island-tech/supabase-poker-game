@@ -1,25 +1,32 @@
 <template>
     <div class="game-wrapper">
-        <!-- Money Display Section -->
         <h1>💰 Money Clicker Game</h1>
         <p>You have: <strong>{{ money }}</strong> money</p>
 
         <!-- Button to Earn Money -->
-        <button @click="incrementMoney" class="">
+        <button @click="incrementMoney" class="cookie-button">
             <img src="/images/cookie.png" alt="cookie" class="w-100 h-100" />
         </button>
+
+        <!-- Cashout Component -->
+        <Cashout :onCashOut="cashOut" />
     </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
+import Cashout from './Cashout.vue'
 
-// State to track the money
+
+
 const money = ref(0)
 
-// Function to increment money when the user clicks the button
 function incrementMoney() {
     money.value += 1
+}
+
+function cashOut() {
+    money.value = 0
 }
 </script>
 
@@ -44,18 +51,18 @@ p {
     margin-bottom: 2rem;
 }
 
-.click-button {
-    padding: 1rem 2rem;
-    font-size: 1.5rem;
-    background-color: #28a745;
-    color: white;
+.cookie-button {
+    width: 150px;
+    height: 150px;
+    background: none;
     border: none;
-    border-radius: 10px;
     cursor: pointer;
-    transition: background 0.3s ease;
+    margin-bottom: 1rem;
 }
 
-.click-button:hover {
-    background-color: #218838;
+.cookie-button img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
 </style>
