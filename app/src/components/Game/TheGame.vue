@@ -5,8 +5,8 @@
         <p>You have: <strong>{{ money }}</strong> money</p>
 
         <!-- Button to Earn Money -->
-        <button @click="incrementMoney" class="click-button">
-            Click to Earn Money
+        <button @click="incrementMoney" class="">
+            <img src="/images/cookie.png" alt="cookie" class="w-100 h-100" />
         </button>
     </div>
 </template>
