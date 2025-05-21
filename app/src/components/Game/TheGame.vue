@@ -1,15 +1,17 @@
 <template>
     <div class="game-wrapper">
+        <!-- Money Display Section -->
         <h1>💰 Money Clicker Game</h1>
-        <p>You have: <strong>{{ money }}</strong> money</p>
+        <p>
+            You have: <strong>{{ money }}</strong> money
+        </p>
 
         <!-- Button to Earn Money -->
-        <button @click="incrementMoney" class="cookie-button">
+        <button @click="incrementMoney" @mousedown="isClicked = true" @mouseup="isClicked = false"
+            @mouseleave="isClicked = false" :class="{ 'scale-110': isClicked }"
+            class="transition-transform duration-150 ease-out">
             <img src="/images/cookie.png" alt="cookie" class="w-100 h-100" />
         </button>
-
-        <!-- Cashout Component -->
-        <Cashout :onCashOut="cashOut" />
     </div>
 </template>
 
@@ -19,6 +21,10 @@ import Cashout from './Cashout.vue'
 
 
 
+
+const isClicked = ref(false)
+
+// State to track the money
 const money = ref(0)
 
 function incrementMoney() {
