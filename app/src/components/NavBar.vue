@@ -2,13 +2,10 @@
   <nav class="bg-gray-800">
     <div class="mx-auto max-w-7xl px-2 mq-sm:px-6 mq-lg:px-8">
       <div class="flex flex-wrap items-center justify-between gap-4 py-4">
-        <!-- Logo + Money -->
         <div class="flex items-center gap-4 flex-shrink-0">
           <img class="h-8 w-auto" src="/images/poker.png" alt="Logo" />
           <MoneyDisplay />
         </div>
-
-        <!-- Navigation buttons (wrap if needed) -->
         <div class="flex flex-wrap gap-2 justify-center mq-sm:justify-end">
           <SignIn />
           <RouterLink

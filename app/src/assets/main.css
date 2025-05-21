@@ -1,70 +1,80 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
-/* Small Devices - Tablets (≥ 640px) */
 @media (min-width: 640px) {
-    .sm-hide {
-      display: none !important;
-    }
-  
-    .sm-text-lg {
-      font-size: 1.125rem !important;
-    }
-  
-    .sm-p-4 {
-      padding: 1rem !important;
-    }
+  .sm-hide {
+    display: none !important;
   }
-  
-  /* Medium Devices - Small Laptops (≥ 768px) */
-  @media (min-width: 768px) {
-    .md-hide {
-      display: none !important;
-    }
-  
-    .md-text-xl {
-      font-size: 1.25rem !important;
-    }
-  
-    .md-flex-row {
-      flex-direction: row !important;
-    }
-  
-    .md-p-6 {
-      padding: 1.5rem !important;
-    }
+
+  .sm-text-lg {
+    font-size: 1.125rem !important;
   }
-  
-  /* Large Devices - Desktops (≥ 1024px) */
-  @media (min-width: 1024px) {
-    .lg-hide {
-      display: none !important;
-    }
-  
-    .lg-text-2xl {
-      font-size: 1.5rem !important;
-    }
-  
-    .lg-flex-col {
-      flex-direction: column !important;
-    }
-  
-    .lg-p-8 {
-      padding: 2rem !important;
-    }
+
+  .sm-p-4 {
+    padding: 1rem !important;
   }
-  
-  /* Extra Large (≥ 1280px) */
-  @media (min-width: 1280px) {
-    .xl-show {
-      display: block !important;
-    }
-  
-    .xl-text-3xl {
-      font-size: 1.875rem !important;
-    }
-  
-    .xl-mx-auto {
-      margin-left: auto !important;
-      margin-right: auto !important;
-    }
+}
+
+@media (min-width: 768px) {
+  .md-hide {
+    display: none !important;
   }
+
+  .md-text-xl {
+    font-size: 1.25rem !important;
+  }
+
+  .md-flex-row {
+    flex-direction: row !important;
+  }
+
+  .md-p-6 {
+    padding: 1.5rem !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .lg-hide {
+    display: none !important;
+  }
+
+  .lg-text-2xl {
+    font-size: 1.5rem !important;
+  }
+
+  .lg-flex-col {
+    flex-direction: column !important;
+  }
+
+  .lg-p-8 {
+    padding: 2rem !important;
+  }
+}
+
+@media (min-width: 1280px) {
+  .xl-show {
+    display: block !important;
+  }
+
+  .xl-text-3xl {
+    font-size: 1.875rem !important;
+  }
+
+  .xl-mx-auto {
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+}
+
+.dm-sans-regular {
+  font-family: "DM Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.dm-sans-bold {
+  font-family: "DM Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+}
