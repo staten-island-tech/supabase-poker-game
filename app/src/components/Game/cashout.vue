@@ -1,20 +1,50 @@
-<!-- src/components/Cashout.vue -->
 <template>
-    <button @click="cashOut" class="cashout-button">
+    <button @click="handleCashOut" class="cashout-button">
         💸 Cash Out
     </button>
 </template>
 
 <script setup>
+import { useUserStore } from '@/stores/auth/user'
+import { supabase } from '@/plugins/supabase.js'
+import { ref } from 'vue'
+
 const props = defineProps({
-    onCashOut: {
-        type: Function,
-        required: true,
-    },
+    onCashOut: Function
 })
 
-function cashOut() {
-    props.onCashOut()
+const userStore = useUserStore()
+
+async function handleCashOut() {
+    try {
+        const localMoney = localStorage.getItem('money') || 0
+
+        if (localMoney === '0' || !localMoney) {
+            return
+        }
+
+        const updatedMoney = userStore.userData.money + parseInt(localMoney)
+
+        const { data, error } = await supabase
+            .from('users')
+            .update({ money: updatedMoney })
+            .eq('id', userStore.userData.id)
+
+        if (error) {
+            return
+        }
+
+        localStorage.setItem('money', 0)
+
+        userStore.userData.money = updatedMoney
+
+        props.onCashOut?.()
+
+        window.location.reload()
+
+    } catch (error) {
+        console.error('Error during cashout:', error)
+    }
 }
 </script>
 

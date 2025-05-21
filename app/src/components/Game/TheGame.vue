@@ -16,23 +16,24 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import Cashout from './Cashout.vue'
-
-
-
+import { ref, onMounted } from 'vue'
 
 const isClicked = ref(false)
 
-// State to track the money
+// Initialize money value from localStorage (if available)
 const money = ref(0)
+
+onMounted(() => {
+    const storedMoney = localStorage.getItem('money')
+    if (storedMoney) {
+        money.value = parseInt(storedMoney, 10)
+    }
+})
 
 function incrementMoney() {
     money.value += 1
-}
-
-function cashOut() {
-    money.value = 0
+    // Store the updated money in localStorage
+    localStorage.setItem('money', money.value)
 }
 </script>
 
