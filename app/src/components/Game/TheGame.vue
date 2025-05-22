@@ -1,12 +1,9 @@
 <template>
     <div class="game-wrapper">
-        <!-- Money Display Section -->
         <h1>💰 Money Clicker Game</h1>
         <p>
             You have: <strong>{{ money }}</strong> money
         </p>
-
-        <!-- Button to Earn Money -->
         <button @click="incrementMoney" @mousedown="isClicked = true" @mouseup="isClicked = false"
             @mouseleave="isClicked = false" :class="{ 'scale-110': isClicked }"
             class="transition-transform duration-150 ease-out">
@@ -20,7 +17,6 @@ import { ref, onMounted } from 'vue'
 
 const isClicked = ref(false)
 
-// Initialize money value from localStorage (if available)
 const money = ref(0)
 
 onMounted(() => {
@@ -32,7 +28,6 @@ onMounted(() => {
 
 function incrementMoney() {
     money.value += 1
-    // Store the updated money in localStorage
     localStorage.setItem('money', money.value)
 }
 </script>
