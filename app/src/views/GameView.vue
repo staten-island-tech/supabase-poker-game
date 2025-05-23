@@ -1,24 +1,21 @@
 <template>
-    <div>
-        <TheGame :money="money" @increment="incrementMoney" />
-        <Cashout @cash-out="cashOut" />
-        <TheUpgrade/>
+  <div class="min-h-screen flex flex-col items-center bg-gray-50 p-6">
+    <div class="w-full max-w-lg flex justify-center gap-6 mb-8">
+      <div class="flex-1 max-w-xs">
+        <UpgradeButton />
+      </div>
+      <div class="flex-1 max-w-xs">
+        <Cashout />
+      </div>
     </div>
+    <div class="w-full max-w-md flex justify-center">
+      <TheGame />
+    </div>
+  </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
 import TheGame from '@/components/Game/TheGame.vue'
 import Cashout from '@/components/Game/Cashout.vue'
-import TheUpgrade from '@/components/Game/TheUpgrade.vue'
-
-const money = ref(0)
-
-function incrementMoney() {
-    money.value += 1
-}
-
-function cashOut() {
-    money.value = 0
-}
+import UpgradeButton from '@/components/Game/UpgradeButton.vue'
 </script>
