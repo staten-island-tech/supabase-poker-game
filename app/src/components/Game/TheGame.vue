@@ -1,39 +1,31 @@
 <template>
     <div class="game-wrapper">
-        <!-- Money Display Section -->
         <h1>💰 Money Clicker Game</h1>
         <p>
             You have: <strong>{{ money }}</strong> money
         </p>
 
-        <!-- Button to Earn Money -->
-        <button @click="incrementMoney" @mousedown="isClicked = true" @mouseup="isClicked = false"
+        <button @click="onIncrementMoney" @mousedown="isClicked = true" @mouseup="isClicked = false"
             @mouseleave="isClicked = false" :class="{ 'scale-110': isClicked }"
-            class="transition-transform duration-150 ease-out">
-            <img src="/images/cookie.png" alt="cookie" class="w-100 h-100" />
+            class="transition-transform duration-150 ease-out cookie-button">
+            <img src="/images/cookie.png" alt="cookie" />
         </button>
     </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import { getStoredMoney, incrementMoney } from './game.js'
 
 const isClicked = ref(false)
-
-// Initialize money value from localStorage (if available)
 const money = ref(0)
 
 onMounted(() => {
-    const storedMoney = localStorage.getItem('money')
-    if (storedMoney) {
-        money.value = parseInt(storedMoney, 10)
-    }
+    money.value = getStoredMoney()
 })
 
-function incrementMoney() {
-    money.value += 1
-    // Store the updated money in localStorage
-    localStorage.setItem('money', money.value)
+function onIncrementMoney() {
+    money.value = incrementMoney(money.value)
 }
 </script>
 
