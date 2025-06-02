@@ -25,7 +25,7 @@ onMounted(() => {
 })
 
 function onIncrementMoney() {
-    money.value = incrementMoney(money.value)
+    money.value = incrementMoney()
 }
 </script>
 

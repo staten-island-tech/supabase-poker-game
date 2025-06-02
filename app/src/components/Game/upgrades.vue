@@ -1,96 +1,75 @@
 <template>
-    <div class="upgrades-wrapper">
-        <h2>Click Upgrade</h2>
+    <div class="upgrade-wrapper">
+        <p>Click Multiplier: x{{ multiplier.toFixed(2) }}</p>
+        <p>Level: {{ level }}</p>
+        <p>Upgrade Cost: {{ cost }}</p>
 
-        <p>Total Points: {{ totalPoints.toFixed(2) }}</p>
-        <p>Click Multiplier: x{{ clickMultiplier.toFixed(2) }}</p>
-        <p>Click Strength: +{{ (basePointsPerClick * clickMultiplier).toFixed(2) }}</p>
-
-        <button class="click-button" @click="handleClickCookie">
-            Click Me 🍪
-        </button>
-
-        <button class="upgrade-button" :disabled="!canBuyUpgrade" @click="handleBuyClickMultiplier">
-            Buy Click Multiplier Upgrade (Cost: {{ clickMultiplierCost }})
+        <button :disabled="money < cost" @click="buyUpgrade">
+            Upgrade Click Multiplier
         </button>
     </div>
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue'
 import {
-    totalPoints,
-    clickMultiplier,
-    basePointsPerClick,
-    clickCookie,
-    buyClickMultiplierUpgrade,
-    getClickMultiplierUpgradeCost,
+    getClickMultiplier,
+    getClickMultiplierLevel,
+    getUpgradeCost,
+    tryBuyClickMultiplierUpgrade,
+    getStoredMoney
 } from './upgrades.js'
 
-import { computed } from 'vue'
+const multiplier = ref(1)
+const level = ref(1)
+const cost = ref(50)
+const money = ref(0)
 
-// Compute upgrade cost dynamically
-const clickMultiplierCost = computed(() => getClickMultiplierUpgradeCost())
-
-// Can buy upgrade only if enough points
-const canBuyUpgrade = computed(() => totalPoints.value >= clickMultiplierCost.value)
-
-// Handler functions
-function handleClickCookie() {
-    clickCookie()
+function updateState() {
+    multiplier.value = getClickMultiplier()
+    level.value = getClickMultiplierLevel()
+    cost.value = getUpgradeCost()
+    money.value = getStoredMoney()
 }
 
-function handleBuyClickMultiplier() {
-    buyClickMultiplierUpgrade()
+function buyUpgrade() {
+    const result = tryBuyClickMultiplierUpgrade()
+    if (result.success) {
+        updateState()
+        alert(`Upgraded! Multiplier is now x${result.newMultiplier.toFixed(2)}`)
+    } else {
+        alert(result.message)
+    }
 }
+
+onMounted(() => {
+    updateState()
+    setInterval(updateState, 1000) // sync state every second
+})
 </script>
 
 <style scoped>
-.upgrades-wrapper {
-    max-width: 360px;
-    margin: 2rem auto;
+.upgrade-wrapper {
+    padding: 1rem;
+    background: #f5f5f5;
+    border-radius: 8px;
     text-align: center;
     font-family: Arial, sans-serif;
-    background: #f0f0f0;
-    padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 button {
-    width: 100%;
-    margin-top: 1rem;
-    padding: 0.75rem 0;
-    font-size: 1.2rem;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    background: #42a5f5;
+    color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 6px;
+    margin-top: 1rem;
     cursor: pointer;
-    transition: background-color 0.3s ease;
 }
 
-.click-button {
-    background-color: #ffb74d;
-    color: #fff;
-    font-weight: bold;
-    box-shadow: 0 4px #d6892c;
-}
-
-.click-button:hover {
-    background-color: #ffa726;
-}
-
-.upgrade-button {
-    background-color: #64b5f6;
-    color: #fff;
-    box-shadow: 0 4px #357ae8;
-}
-
-.upgrade-button:disabled {
-    background-color: #a0a0a0;
+button:disabled {
+    background: #aaa;
     cursor: not-allowed;
-    box-shadow: none;
-}
-
-.upgrade-button:hover:enabled {
-    background-color: #42a5f5;
 }
 </style>

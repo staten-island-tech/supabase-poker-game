@@ -1,52 +1,59 @@
-import { ref, watch } from 'vue'
+// upgrades.js
 
-// Load total points from localStorage or start at 0
-export const totalPoints = ref(parseFloat(localStorage.getItem('money')) || 0)
-
-// Base points per click (always 1 here)
-export const basePointsPerClick = 1
-
-// Click multiplier starts at 1 (no multiplier)
-export const clickMultiplier = ref(1)
-
-// Track current click multiplier upgrade level (starts at 1)
-export const clickMultiplierLevel = ref(parseInt(localStorage.getItem('clickMultiplierLevel')) || 1)
-
-// Save totalPoints and clickMultiplierLevel to localStorage on changes
-watch(totalPoints, (val) => {
-  localStorage.setItem('money', val.toFixed(2))
-})
-watch(clickMultiplierLevel, (val) => {
-  localStorage.setItem('clickMultiplierLevel', val)
-})
-
-// Calculate cost for next click multiplier upgrade (e.g., linear scaling)
-export function getClickMultiplierUpgradeCost() {
-  return 50 * clickMultiplierLevel.value
+export function getClickMultiplierLevel() {
+  return parseInt(localStorage.getItem('clickMultiplierLevel')) || 1
 }
 
-// Calculate how much the click multiplier increases on each upgrade
-export function getClickMultiplierIncrease() {
-  return 0.25 + (clickMultiplierLevel.value - 1) * 0.05
+export function setClickMultiplierLevel(level) {
+  localStorage.setItem('clickMultiplierLevel', level)
 }
 
-// Function to handle clicking cookie: adds points based on multiplier
-export function clickCookie() {
-  const pointsGained = basePointsPerClick * clickMultiplier.value
-  totalPoints.value += pointsGained
-  console.log(`Clicked! +${pointsGained.toFixed(2)} points, Total: ${totalPoints.value.toFixed(2)}`)
+export function getClickMultiplier() {
+  return parseFloat(localStorage.getItem('clickMultiplier')) || 1
 }
 
-// Function to buy click multiplier upgrade if enough points
-export function buyClickMultiplierUpgrade() {
-  const cost = getClickMultiplierUpgradeCost()
-  if (totalPoints.value >= cost) {
-    totalPoints.value -= cost
-    const increase = getClickMultiplierIncrease()
-    clickMultiplier.value += increase
-    clickMultiplierLevel.value += 1
-    console.log(`Upgrade bought! Click multiplier is now x${clickMultiplier.value.toFixed(2)}.`)
-  } else {
-    console.log(`Not enough points! Need ${cost.toFixed(2)} points.`)
+export function setClickMultiplier(multiplier) {
+  localStorage.setItem('clickMultiplier', multiplier.toFixed(2))
+}
+
+export function getUpgradeCost() {
+  const level = getClickMultiplierLevel()
+  return 50 * level
+}
+
+export function getUpgradeIncrease() {
+  const level = getClickMultiplierLevel()
+  return 0.25 + (level - 1) * 0.05
+}
+
+export function getStoredMoney() {
+  return parseInt(localStorage.getItem('money') || '0', 10)
+}
+
+export function setStoredMoney(amount) {
+  localStorage.setItem('money', amount.toString())
+}
+
+export function tryBuyClickMultiplierUpgrade() {
+  const money = getStoredMoney()
+  const cost = getUpgradeCost()
+
+  if (money >= cost) {
+    const newMultiplier = getClickMultiplier() + getUpgradeIncrease()
+    const newLevel = getClickMultiplierLevel() + 1
+    const newMoney = money - cost
+
+    setStoredMoney(newMoney)
+    setClickMultiplier(newMultiplier)
+    setClickMultiplierLevel(newLevel)
+
+    return {
+      success: true,
+      newMultiplier,
+      newLevel,
+      newMoney,
+    }
   }
+
+  return { success: false, message: 'Not enough money' }
 }
