@@ -1,54 +1,52 @@
-// upgrades.js
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 
-export const upgrades = ref([]) // you can expand this later with upgrade items
+// Load total points from localStorage or start at 0
+export const totalPoints = ref(parseFloat(localStorage.getItem('money')) || 0)
 
+// Base points per click (always 1 here)
 export const basePointsPerClick = 1
 
+// Click multiplier starts at 1 (no multiplier)
 export const clickMultiplier = ref(1)
-export const passiveMultiplier = ref(1)
-export const temporaryMultiplier = ref(1)
 
-export const totalPoints = ref(0)
+// Track current click multiplier upgrade level (starts at 1)
+export const clickMultiplierLevel = ref(parseInt(localStorage.getItem('clickMultiplierLevel')) || 1)
 
-function getTotalMultiplier() {
-  return clickMultiplier.value * passiveMultiplier.value * temporaryMultiplier.value
+// Save totalPoints and clickMultiplierLevel to localStorage on changes
+watch(totalPoints, (val) => {
+  localStorage.setItem('money', val.toFixed(2))
+})
+watch(clickMultiplierLevel, (val) => {
+  localStorage.setItem('clickMultiplierLevel', val)
+})
+
+// Calculate cost for next click multiplier upgrade (e.g., linear scaling)
+export function getClickMultiplierUpgradeCost() {
+  return 50 * clickMultiplierLevel.value
 }
 
+// Calculate how much the click multiplier increases on each upgrade
+export function getClickMultiplierIncrease() {
+  return 0.25 + (clickMultiplierLevel.value - 1) * 0.05
+}
+
+// Function to handle clicking cookie: adds points based on multiplier
 export function clickCookie() {
-  const pointsGained = basePointsPerClick * getTotalMultiplier()
+  const pointsGained = basePointsPerClick * clickMultiplier.value
   totalPoints.value += pointsGained
-  console.log(
-    `You earned ${pointsGained.toFixed(2)} points! Total: ${totalPoints.value.toFixed(2)}`,
-  )
+  console.log(`Clicked! +${pointsGained.toFixed(2)} points, Total: ${totalPoints.value.toFixed(2)}`)
 }
 
-export function buyClickMultiplierUpgrade(cost, increase) {
+// Function to buy click multiplier upgrade if enough points
+export function buyClickMultiplierUpgrade() {
+  const cost = getClickMultiplierUpgradeCost()
   if (totalPoints.value >= cost) {
     totalPoints.value -= cost
+    const increase = getClickMultiplierIncrease()
     clickMultiplier.value += increase
-    console.log(`Click multiplier increased to ${clickMultiplier.value.toFixed(2)}!`)
+    clickMultiplierLevel.value += 1
+    console.log(`Upgrade bought! Click multiplier is now x${clickMultiplier.value.toFixed(2)}.`)
   } else {
-    console.log('Not enough points for click multiplier upgrade.')
+    console.log(`Not enough points! Need ${cost.toFixed(2)} points.`)
   }
-}
-
-export function buyPassiveMultiplierUpgrade(cost, increase) {
-  if (totalPoints.value >= cost) {
-    totalPoints.value -= cost
-    passiveMultiplier.value += increase
-    console.log(`Passive multiplier increased to ${passiveMultiplier.value.toFixed(2)}!`)
-  } else {
-    console.log('Not enough points for passive multiplier upgrade.')
-  }
-}
-
-export function activateTemporaryMultiplier(multiplierValue, durationMs) {
-  temporaryMultiplier.value = multiplierValue
-  console.log(`Temporary multiplier activated: x${multiplierValue}`)
-
-  setTimeout(() => {
-    temporaryMultiplier.value = 1
-    console.log('Temporary multiplier expired.')
-  }, durationMs)
 }

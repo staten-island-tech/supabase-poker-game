@@ -1,18 +1,18 @@
 <template>
     <div class="upgrades-wrapper">
-        <h2>Upgrade Clicker</h2>
+        <h2>Click Upgrade</h2>
+
         <p>Total Points: {{ totalPoints.toFixed(2) }}</p>
         <p>Click Multiplier: x{{ clickMultiplier.toFixed(2) }}</p>
-        <p>Passive Multiplier: x{{ passiveMultiplier.toFixed(2) }}</p>
-        <p>Temporary Multiplier: x{{ temporaryMultiplier.toFixed(2) }}</p>
+        <p>Click Strength: +{{ (basePointsPerClick * clickMultiplier).toFixed(2) }}</p>
 
-        <button @click="handleClickCookie">Click Cookie 🍪</button>
+        <button class="click-button" @click="handleClickCookie">
+            Click Me 🍪
+        </button>
 
-        <div class="upgrades-buttons">
-            <button @click="handleBuyClickMultiplier">Buy Click Multiplier Upgrade (Cost: 50)</button>
-            <button @click="handleBuyPassiveMultiplier">Buy Passive Multiplier Upgrade (Cost: 100)</button>
-            <button @click="handleActivateTempMultiplier">Activate x5 Temp Multiplier (10s)</button>
-        </div>
+        <button class="upgrade-button" :disabled="!canBuyUpgrade" @click="handleBuyClickMultiplier">
+            Buy Click Multiplier Upgrade (Cost: {{ clickMultiplierCost }})
+        </button>
     </div>
 </template>
 
@@ -20,48 +20,77 @@
 import {
     totalPoints,
     clickMultiplier,
-    passiveMultiplier,
-    temporaryMultiplier,
+    basePointsPerClick,
     clickCookie,
     buyClickMultiplierUpgrade,
-    buyPassiveMultiplierUpgrade,
-    activateTemporaryMultiplier
+    getClickMultiplierUpgradeCost,
 } from './upgrades.js'
 
+import { computed } from 'vue'
+
+// Compute upgrade cost dynamically
+const clickMultiplierCost = computed(() => getClickMultiplierUpgradeCost())
+
+// Can buy upgrade only if enough points
+const canBuyUpgrade = computed(() => totalPoints.value >= clickMultiplierCost.value)
+
+// Handler functions
 function handleClickCookie() {
     clickCookie()
 }
 
 function handleBuyClickMultiplier() {
-    buyClickMultiplierUpgrade(50, 0.5) // cost 50 points, increase multiplier by 0.5
-}
-
-function handleBuyPassiveMultiplier() {
-    buyPassiveMultiplierUpgrade(100, 0.25) // cost 100 points, increase multiplier by 0.25
-}
-
-function handleActivateTempMultiplier() {
-    activateTemporaryMultiplier(5, 10000) // x5 multiplier for 10 seconds
+    buyClickMultiplierUpgrade()
 }
 </script>
 
 <style scoped>
 .upgrades-wrapper {
-    max-width: 400px;
-    margin: auto;
+    max-width: 360px;
+    margin: 2rem auto;
     text-align: center;
     font-family: Arial, sans-serif;
+    background: #f0f0f0;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 button {
-    margin: 10px 0;
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
+    width: 100%;
+    margin-top: 1rem;
+    padding: 0.75rem 0;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 8px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-.upgrades-buttons>button {
-    display: block;
-    width: 100%;
+.click-button {
+    background-color: #ffb74d;
+    color: #fff;
+    font-weight: bold;
+    box-shadow: 0 4px #d6892c;
+}
+
+.click-button:hover {
+    background-color: #ffa726;
+}
+
+.upgrade-button {
+    background-color: #64b5f6;
+    color: #fff;
+    box-shadow: 0 4px #357ae8;
+}
+
+.upgrade-button:disabled {
+    background-color: #a0a0a0;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.upgrade-button:hover:enabled {
+    background-color: #42a5f5;
 }
 </style>
