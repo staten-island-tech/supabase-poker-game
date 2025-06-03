@@ -51,7 +51,6 @@ onMounted(() => {
 <style scoped>
 .upgrade-wrapper {
     padding: 1rem;
-    background: #f5f5f5;
     border-radius: 8px;
     text-align: center;
     font-family: Arial, sans-serif;

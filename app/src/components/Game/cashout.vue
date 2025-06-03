@@ -29,6 +29,9 @@ async function onCashOutClick() {
 
 <style scoped>
 .cashout-button {
+    display: block;
+    margin: 0 auto 0;
+    margin-top: -20rem;
     padding: 1rem 2rem;
     font-size: 1.25rem;
     background-color: #dc3545;
@@ -37,8 +40,8 @@ async function onCashOutClick() {
     border-radius: 10px;
     cursor: pointer;
     transition: background 0.3s ease;
-    margin-top: 1rem;
 }
+
 
 .cashout-button:hover {
     background-color: #c82333;
