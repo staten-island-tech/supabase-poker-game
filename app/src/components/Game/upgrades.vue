@@ -44,7 +44,7 @@ function buyUpgrade() {
 
 onMounted(() => {
     updateState()
-    setInterval(updateState, 1000) // sync state every second
+    setInterval(updateState, 1000)
 })
 </script>
 
