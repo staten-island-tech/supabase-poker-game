@@ -50,12 +50,23 @@ onMounted(() => {
 
 <style scoped>
 .upgrade-wrapper {
+    position: fixed;
+    bottom: 60px;
+    /* height of cashout button + some margin */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+
     padding: 1rem;
-    border-radius: 8px;
+    max-width: 400px;
+    width: 100%;
     text-align: center;
     font-family: Arial, sans-serif;
 }
 
+
+
+/* Base button styling */
 button {
     padding: 0.75rem 1.5rem;
     font-size: 1rem;
@@ -65,10 +76,49 @@ button {
     border-radius: 6px;
     margin-top: 1rem;
     cursor: pointer;
+    width: 100%;
+    max-width: 300px;
 }
 
 button:disabled {
     background: #aaa;
     cursor: not-allowed;
+}
+
+/* Small screens: smartphones */
+@media (max-width: 600px) {
+    .upgrade-wrapper {
+        padding: 0.75rem;
+        font-size: 0.9rem;
+    }
+
+    button {
+        font-size: 0.9rem;
+        padding: 0.6rem 1.2rem;
+    }
+}
+
+/* Medium screens: tablets */
+@media (min-width: 601px) and (max-width: 1024px) {
+    .upgrade-wrapper {
+        padding: 1rem 2rem;
+    }
+
+    button {
+        font-size: 1rem;
+        padding: 0.75rem 1.5rem;
+    }
+}
+
+/* Large screens: desktops */
+@media (min-width: 1025px) {
+    .upgrade-wrapper {
+        padding: 2rem;
+    }
+
+    button {
+        font-size: 1.1rem;
+        padding: 1rem 2rem;
+    }
 }
 </style>
