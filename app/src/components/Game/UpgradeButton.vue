@@ -8,7 +8,6 @@
       Buy Upgrade<br />
       <span class="text-sm">(Cost: {{ upgradeCost }})</span>
     </button>
-    <div class="text-xs text-gray-500">Current Multiplier: x{{ multiplier }}</div>
   </div>
 </template>
 

@@ -5,6 +5,7 @@
         <div class="flex items-center gap-4 flex-shrink-0">
           <img class="h-8 w-auto" src="/images/poker.png" alt="Logo" />
           <MoneyDisplay />
+          <CurrentMultiplier />
         </div>
         <div class="flex flex-wrap gap-2 justify-center mq-sm:justify-end">
           <SignIn />
@@ -42,6 +43,7 @@
 import { RouterLink } from 'vue-router'
 import SignIn from './signup/SignIn.vue'
 import MoneyDisplay from './MoneyDisplay.vue'
+import CurrentMultiplier from './CurrentMultiplier.vue'
 </script>
 
 <style scoped></style>
