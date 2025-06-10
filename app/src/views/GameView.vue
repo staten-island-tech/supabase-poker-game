@@ -16,6 +16,6 @@
 
 <script setup>
 import TheGame from '@/components/Game/TheGame.vue'
-import Cashout from '@/components/Game/Cashout.vue'
+import Cashout from '@/components/Game/cashout.vue'
 import UpgradeButton from '@/components/Game/UpgradeButton.vue'
 </script>
