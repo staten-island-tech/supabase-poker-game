@@ -1,24 +1,23 @@
 <template>
-    <div>
-        <TheGame :money="money" @increment="incrementMoney" />
-        <Cashout @cash-out="cashOut" />
-        <upgrades />
-
-    </div>
+  <div>
+    <TheGame :money="money" @increment="incrementMoney" />
+    <Cashout @cash-out="cashOut" />
+    <upgrades />
+  </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
 import TheGame from '@/components/Game/TheGame.vue'
-import Cashout from '@/components/Game/Cashout.vue'
+import Cashout from '@/components/Game/cashout.vue'
 import upgrades from '@/components/Game/upgrades.vue'
 const money = ref(0)
 
 function incrementMoney() {
-    money.value += 1
+  money.value += 1
 }
 
 function cashOut() {
-    money.value = 0
+  money.value = 0
 }
 </script>
